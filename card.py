@@ -4,7 +4,7 @@
 '''
 class Card:
     '''
-    Object of this class an represent a playing card.
+    An object of this class represents a playing card.
     Available functions:
         - get_suit()
         - get_suit_symbol()
