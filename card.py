@@ -1,4 +1,17 @@
+'''
+# Card Class
+# Written by: Bhavjot Singh
+'''
 class Card:
+    '''
+    Object of this class an represent a playing card.
+    Available functions:
+        - get_suit()
+        - get_suit_symbol()
+        - get_rank()
+        - get_value()
+        - get_deck_id()
+    '''
     def __init__(self, suit:str, rank, deck_id: int) -> None:
         """
         Initializes a card which belongs to a distinct suit and has a distint rank.

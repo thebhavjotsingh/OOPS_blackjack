@@ -1,3 +1,7 @@
+'''
+# Deck Class
+# Written by: Bhavjot Singh
+'''
 from card import Card
 import random
 
@@ -5,6 +9,16 @@ SUITS = ["spades", "hearts", "clubs", "diamonds"]
 RANKS = ["A","K","Q","J",2,3,4,5,6,7,8,9,10]
 
 class Deck:
+    '''
+    Name of this class can be a bit deceiving.
+    Objects of this class can contain multiple decks of cards that can be used for various card games.
+    Available functions (call the function for more details):
+        - generate_deck()
+        - retrieve_random_card()
+        - get_number_of_cards()
+        - get_card(suit, rank)
+        - count_card(card)
+    '''
     def __init__(self, num_of_decks:int) -> None:
         """
         Initializes an instance of the deck class.
@@ -44,7 +58,7 @@ class Deck:
         """
         return self.num_of_cards
 
-    def get_card(self, suit, rank):
+    def get_card(self, suit:str, rank):
         """
         Retrieves a card matching the description. (Does not mofify the deck.)
         """

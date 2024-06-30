@@ -1,6 +1,12 @@
 from card import Card
 
 class Player:
+    '''
+    An object of this class represents a player in a blackjack game.
+    Available Functions:
+        - add_card(card)
+        - point_calc()
+    '''
     def __init__(self, name: str) -> None:
         """
         Initializes an instance of a player.
