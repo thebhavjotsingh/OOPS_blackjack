@@ -12,7 +12,7 @@ class Player:
         - add_card(card)
         - point_calc()
     '''
-    def __init__(self, id: int, name: str, money: int) -> None:
+    def __init__(self, id:int, name:str, money:int = None) -> None:
         """
         Initializes an instance of a player.
         """
