@@ -12,7 +12,7 @@ class Player:
         - add_card(card)
         - point_calc()
     '''
-    def __init__(self, name: str) -> None:
+    def __init__(self, id: int, name: str, money: int) -> None:
         """
         Initializes an instance of a player.
         """
@@ -20,7 +20,7 @@ class Player:
         self.cards = []
         self.card_points = []
         self.points = 0
-        self.turn = 0
+        self.bet = money
 
     def add_card(self, card: Card):
         """
@@ -42,7 +42,18 @@ class Player:
                 return add-10
             else:
                 return add
-            
+
+    def change_bet(self, mode: str, amount: int):
+        """
+        
+        """
+        if mode.lower() == 'add':
+            self.bet += amount
+        elif mode.lower() == 'del':
+            self.bet -= amount
+        else:
+            raise Exception(f"{mode} is not a valid option for changing bet.")
+
     def __str__(self) -> str:
         """
         String representation of the players.
