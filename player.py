@@ -1,3 +1,8 @@
+'''
+# Player Class for blackjack game
+# Written by: Bhavjot Singh
+'''
+
 from card import Card
 
 class Player:
