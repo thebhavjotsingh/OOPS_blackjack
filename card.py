@@ -79,9 +79,9 @@ class Card:
         """
         rep = f'''
  ___ 
-|{self.rank}  |
+|{self.rank:<3}|
 |   |
-|  {self.suit_sym}|
+|{self.suit_sym:>3}|
  ‾‾‾ 
 '''
         # return f"{self.suit_sym}{str(self.rank)}"
