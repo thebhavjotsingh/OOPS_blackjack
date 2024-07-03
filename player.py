@@ -16,6 +16,7 @@ class Player:
         """
         Initializes an instance of a player.
         """
+        self.id = id
         self.name = name
         self.cards = []
         self.card_points = []
