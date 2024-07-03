@@ -81,7 +81,7 @@ class Card:
  ___ 
 |{self.rank}  |
 |   |
-|  {self.suit}|
+|  {self.suit_sym}|
  ‾‾‾ 
 '''
         # return f"{self.suit_sym}{str(self.rank)}"
