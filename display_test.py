@@ -14,14 +14,14 @@ for row in range(no_rows):
     row_cards = cards[0+row*4:4+row*4]
     for line in range(5):
         row_line = ''
+        red_count = 0
         for i in range(len(row_cards)):
-            row_line += str(row_cards[i]).split('\n')[line]
+            if row_cards[i].get_suit() in ['hearts','diamonds']:
+                row_line += f"\033[31m{str(row_cards[i]).split('\n')[line]}\033[00m"
+                red_count += 10 # each colored card needs ten more spaces for proper indentation
+            else: 
+                row_line += str(row_cards[i]).split('\n')[line]
             if i != 3:
                 row_line += "  "
-        row_line = f"{row_line:^78}"
+        row_line = f"{row_line:^{78+red_count}}"
         print(row_line)
-
-                   
-
-
-

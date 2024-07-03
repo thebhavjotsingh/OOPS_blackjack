@@ -21,6 +21,7 @@ class Player:
         self.cards = []
         self.card_points = []
         self.points = 0
+        self.ini_money = money
         self.money = money
         self.bet = 0
 
@@ -53,12 +54,18 @@ class Player:
             if self.money >= amount:
                 self.money -= amount
                 self.bet += amount
+        
         elif mode.lower() == 'clear':
             self.bet = 0
         elif mode.lower() == 'cash':
-            
+            pass
+            # Yet to be implemented
         else:
             raise Exception(f"{mode} is not a valid option for changing bet.")
+        
+    def display_quit(self):
+        winnings = self.ini_money - self.money
+        # Display yet to be made.
 
     def __str__(self) -> str:
         """
