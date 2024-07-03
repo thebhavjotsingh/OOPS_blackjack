@@ -77,12 +77,10 @@ class Card:
         """
         String representation of the card.
         """
-        rep = f'''
- ___ 
+        rep = f''' ___ 
 |{self.rank:<3}|
 |   |
 |  {self.suit_sym}|
- ‾‾‾ 
-'''
+ ‾‾‾ '''
         # return f"{self.suit_sym}{str(self.rank)}"
         return rep
