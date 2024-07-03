@@ -21,7 +21,8 @@ class Player:
         self.cards = []
         self.card_points = []
         self.points = 0
-        self.bet = money
+        self.money = money
+        self.bet = 0
 
     def add_card(self, card: Card):
         """
@@ -44,14 +45,18 @@ class Player:
             else:
                 return add
 
-    def change_bet(self, mode: str, amount: int):
+    def change_bet(self, mode: str, amount:int = None):
         """
         
         """
-        if mode.lower() == 'add':
-            self.bet += amount
-        elif mode.lower() == 'del':
-            self.bet -= amount
+        if mode.lower() == 'add' and amount != None:
+            if self.money >= amount:
+                self.money -= amount
+                self.bet += amount
+        elif mode.lower() == 'clear':
+            self.bet = 0
+        elif mode.lower() == 'cash':
+            
         else:
             raise Exception(f"{mode} is not a valid option for changing bet.")
 
