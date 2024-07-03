@@ -73,9 +73,9 @@ class Card:
         """
         return self.deck_id
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         """
-        String representation of the card.
+        Representation of the card in a box format
         """
         rep = f''' ___ 
 |{self.rank:<3}|
@@ -84,3 +84,9 @@ class Card:
  ‾‾‾ '''
         # return f"{self.suit_sym}{str(self.rank)}"
         return rep
+    
+    def __str__(self) -> str:
+        """
+        
+        """
+        return f"{self.suit_sym}{self.rank}"
