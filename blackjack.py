@@ -74,9 +74,13 @@ def main():
                                           print("DOUBLE DOWN IS NOT AVAILABLE AFTER TWO TURNS")
                                           pass
                                     players[i-1].bet *= 2
+                            
                               elif decision.upper() == "SURRENDER" or decision == "5":
                                     players[i-1].bet /= 2
                                     pass
+                              
+                                    
+                                    
      
 main()
 
