@@ -18,7 +18,7 @@ for row in range(no_rows):
             row_line += str(row_cards[i]).split('\n')[line]
             if i != 3:
                 row_line += "  "
-        row_line = f"{26*' '}{row_line}"
+        row_line = f"{row_line:^78}"
         print(row_line)
 
                    
