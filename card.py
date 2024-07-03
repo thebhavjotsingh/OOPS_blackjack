@@ -18,7 +18,7 @@ class Card:
         """
         suit = suit.lower()
         suits_name = ["hearts", "clubs", "diamonds", "spades"]
-        suits_sym = ["♥️", "♣️", "♦️", "♠️"]
+        suits_sym = ["♥", "♣", "♦", "♠"]
         
         
         if suit not in ["hearts", "clubs", "diamonds", "spades"]:
