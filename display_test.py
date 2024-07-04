@@ -1,5 +1,6 @@
 from card import Card
 from deck import Deck
+from player import Player
 
 deck = Deck(1)
 
@@ -25,4 +26,78 @@ for row in range(no_rows):
             if i != 3:
                 row_line += "  "
         row_line = f"{row_line:^{78+red_count}}"
-        print(row_line)
+        #print(row_line)
+
+#Dealer
+Dealer_cards=[]
+
+for j in range(2):
+    Dealer_cards.append(deck.retrieve_card())
+
+Dealer_str='Dealer'
+print(f"{Dealer_str:^{78}}")
+
+for line_2 in range(5):
+    Dealer_rep = ''
+    red_count = 0
+    for k in range(len(Dealer_cards)):
+        
+        if Dealer_cards[k].get_suit() in ['hearts','diamonds']:
+                
+                Dealer_rep += f"\033[31m{repr(Dealer_cards[k]).split('\n')[line_2]}\033[00m"
+                red_count += 10 # each colored card needs ten more spaces for proper indentation
+        else: 
+                Dealer_rep += repr(Dealer_cards[k]).split('\n')[line_2]
+        if k != 3:
+            Dealer_rep += "  "
+    Dealer_rep = f"{Dealer_rep:^{78+red_count}}"
+    print(Dealer_rep)
+
+print(f"{'POINTS:':^{78}}")
+print('\n')
+
+
+Player1_cards = []
+
+for l in range(2):
+    Player1_cards.append(deck.retrieve_card())
+
+logo = r"""
+       ______  _                             __ 
+      (_____ \| |                           /  |
+       _____) ) | ____ _   _  ____  ____   /_/ |
+      |  ____/| |/ _  | | | |/ _  )/ ___)    | |
+      | |     | ( ( | | |_| ( (/ /| |        | |
+      |_|     |_|\_||_|\__  |\____)_|        |_|
+                       (____/                    
+"""
+
+print(f"{logo:^{178}}")
+for line_3 in range(5):
+    Player_rep = ''
+    red_count = 0
+    for m in range(len(Player1_cards)):
+        if Player1_cards[m].get_suit() in ['hearts','diamonds']:
+                
+                Player_rep += f"\033[31m{repr(Player1_cards[m]).split('\n')[line_3]}\033[00m"
+                red_count += 10 # each colored card needs ten more spaces for proper indentation
+        else: 
+                Player_rep += repr(Player1_cards[m]).split('\n')[line_3]
+        
+        if m != 3:
+            Player_rep += "  "
+    Player_rep = f"{Player_rep:^{78+red_count}}"
+    print(Player_rep)
+
+print(f"{'POINTS:':^{78}}")
+print('\n')
+print("\033[31;1;4mHello\033[0m")
+
+
+
+
+
+
+
+
+
