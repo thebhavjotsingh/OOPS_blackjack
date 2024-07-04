@@ -5,7 +5,7 @@
 from card import Card
 from deck import Deck
 import string
-alpha = string.ascii_uppercase
+ALPHA = string.ascii_uppercase
 
 class Player:
     '''
@@ -95,8 +95,22 @@ class Player:
                 if len(hand_cards) == 2:
                     if hand_cards[0].get_rank() == hand_cards[1].get_rank():
                         new_hand_card = self.remove_card(hi)
-                        id = f"{self.id}"
-                        new_hand = Player()
+                        id = f"{self.id}{ALPHA[no_hands]}"
+                        new_hand = Player(id, self.name, 0, True)
+                        self.hands.append(new_hand)
+                        self.add_card(new_hand_card, no_hands)
+                        self.change_bet("add", self.hands[hi].get_bet(), no_hands)
+        else:
+            if len(self.cards) == 2:
+                if self.cards[0].get_rank() == self.cards[1].get_rank():
+                    new_hand2_card = self.remove_card()
+                    new_hand1_card = self.remove_card()
+                    id1 = f"{self.id}A"; id2 = f"{self.id}B"; 
+                    new_hand1 = Player(id, self.name, 0, True); new_hand2 = Player(id, self.name, 0, True)
+                    self.hands.append(new_hand1); self.hands.append(new_hand2)
+                    self.add_card(new_hand1_card, 0); self.add_card(new_hand2_card, 1)
+                    self.change_bet("add", self.get_bet(), 0); self.change_bet("add", self.get_bet(), 1)
+                    self.bet = 0
 
     def change_bet(self, mode: str, amount:int = 0, hand:int = None):
         """
