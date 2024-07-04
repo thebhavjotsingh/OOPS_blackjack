@@ -54,7 +54,10 @@ class Deck:
         """
         Retrieves a random card.
         """
+        if self.num_of_cards == 0: raise Exception("Deck is empty")
         suit = random.choice(SUITS)
+        while len(self.deck[suit]) == 0: suit = random.choice(SUITS)
+        
         the_card = random.choice(self.deck[suit])
         self.deck[suit].remove(the_card)
         self.num_of_cards -= 1
