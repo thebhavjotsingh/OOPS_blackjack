@@ -157,23 +157,24 @@ class Player:
         and then resets the player parameters for the next round.
         """    
         if self.sub_player == True: raise Exception("Resetting split hands is not allowed.")
-        end_money = 0
-        if self.split_done == True:
-            for hi in range(len(self.hands)): #Hand index
-                end_money += self.hands[hi].get_bet()
-                while len(self.hands[hi].cards) != 0:
-                    deck.add_card(self.hands[hi].remove_card())
-        else:
-            end_money += self.bet
-            self.bet = 0
-        self.money += end_money
-
+        if self.name != 'Dealer':
+            end_money = 0
+            if self.split_done == True:
+                for hi in range(len(self.hands)): #Hand index
+                    end_money += self.hands[hi].get_bet()
+                    while len(self.hands[hi].cards) != 0:
+                        deck.add_card(self.hands[hi].remove_card())
+            else:
+                end_money += self.bet
+                self.bet = 0
+            self.money += end_money
+            self.split_done = False
+            self.hands = []
+        
         while len(self.cards) != 0:
             deck.add_card(self.remove_card())
-        self.points = 0
-        self.card_points = []
-        self.hands = []
-        self.split_done = False
+            self.points = 0
+            self.card_points = []
 
     def quit_money(self):
         """
