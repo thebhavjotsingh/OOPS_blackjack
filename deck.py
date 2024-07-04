@@ -110,10 +110,10 @@ class Deck:
             columns += "|\n"        
         return heading + columns + end
     
-deck = Deck(6)
-card = deck.retrieve_card()
-print(deck)
-print(card)
-print("\nCHANGE\n")
-deck.add_card(card)
-print(deck)
+# deck = Deck(6)
+# card = deck.retrieve_card()
+# print(deck)
+# print(card)
+# print("\nCHANGE\n")
+# deck.add_card(card)
+# print(deck)
