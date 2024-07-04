@@ -2,7 +2,7 @@ from copy import deepcopy as dp
 from player import Player
 from deck import Deck
 split = False
-dealer = Player(0, "dealer")
+dealer = Player(0, 'dealer')
 DECK = Deck(6)
 number_of_players = 0
 count = 0
@@ -23,14 +23,18 @@ def player_creation(number_of_players:int, list_of_players:list):
       for i in range(len(list_of_players) + 1, number_of_players + 1):
             name = input(f"ENTER PLAYER {i}'s name: ")
             name = name.upper()
-            amount = int(input(f"ENTER THE STARTING BET AMOUNT FOR {name}: "))
-            if amount < 20:
-                  print("BET AMOUNT CANNOT BE LESS THAN 20.")
-                  name = name.upper()
-                  amount = int(input(f"ENTER THE STARTING BET AMOUNT FOR {name}: "))
+            amount = int(input(f"ENTER THE FUNDS YOU HAVE FOR THIS GAME\n {name}: "))
             pl = Player(i,name,amount)
             list_of_players.append(pl)
-            pl.bet = amount
+
+def set_bet(players:list):
+      for i in range(len(players) + 1, number_of_players + 1):
+            bet_amount = int(input(f"ENTER THE STARTING BET AMOUNT FOR {name}: "))
+            if bet_amount < 20:
+                  print("BET AMOUNT CANNOT BE LESS THAN 20.")
+                  name = name.upper()
+                  bet_amount = int(input(f"ENTER THE STARTING BET AMOUNT FOR {name}: "))
+                  players[i-1].change_bet("add", bet_amount)
 
 def card_distribute(players:list):   
       for i in range (len(players)):
@@ -40,11 +44,9 @@ def card_distribute(players:list):
 
 def card_snatch(players:list, dealer):
       for i in range (len(players)):
-            for j in range(len(players[i].cards)):
-                  players[i].remove_card()
-      
-      for l in range(len(dealer.cards)):
-            dealer.remove_card()
+            players[i].reset_hand(DECK)
+
+      # dealer.reset_hand(DECK)
 
 def round_winner(players:list, dealer):
       card = DECK.retrieve_card()
@@ -53,18 +55,14 @@ def round_winner(players:list, dealer):
       for player in players:
             if player.points > 21:
                   print(f"{player.name} LOST. POINTS REACHED 21")
-                  player.money -= player.bet
-            if dealer.points > 21:
+            elif dealer.points > 21:
                   print(f"DEALER LOST")
-                  player.money += player.bet
-            if player.points > dealer.points:
+            elif player.points > dealer.points:
                   print(f"{player.name} WINS")
-                  player.money += player.bet 
             elif player.points == dealer.points:
                   print("ROUND WAS A TIE.")
             else:
                   print("DEALER WINS")
-                  player.money -= player.bet
 
 def round_end_menu(players:list, dealer):
       count_ = 0
@@ -90,6 +88,7 @@ def game_loop(players:list):
       global count 
       global number_of_players
       count += 1
+      set_bet(players)
       card = DECK.retrieve_card()
       dealer.add_card(card)
       print(f"ROUND {count}")
@@ -99,6 +98,10 @@ def game_loop(players:list):
       while (len(players) != 0):
             for i in range(1, number_of_players+1):
                   while True:
+                        if players[i-1].points > 21:
+                              print(players[i-1])
+                              print("BUSTED. YOU EXCEEDED 21. YOU LOSE.")
+                              break
                         print(f"PLAYER {i} PLAYING")
                         print(players[i-1])
                         decision = input("Select one of the following choices:\n 1.HIT\n 2.STAND\n 3.DOUBLE DOWN\n 4.SPLIT\n 5.SURRENDER\n")
@@ -108,7 +111,7 @@ def game_loop(players:list):
                         elif decision.upper() in ["STAND", "2"]:
                               break
                         elif decision.upper() in ["DOUBLE DOWN", "3"]:
-                              players[i-1].bet *= 2
+                              players[i-1].change_bet("dd")
                               print(f"BET AMOUNT FOR {players[i-1].name} IS INCREASED TO {players[i-1].bet}")
                         elif decision.upper() in ["SPLIT", "4"]:
                               pass
@@ -120,7 +123,7 @@ def game_loop(players:list):
                               print("INCORRECT INPUT")
                               decision = input("Select one of the following choices:\n 1.HIT\n 2.STAND\n 3.DOUBLE DOWN\n 4.SPLIT\n 5.SURRENDER\n")
             round_winner(players, dealer)
-            round_end_menu(players)
+            round_end_menu(players, dealer)
                         
 
 def main():
