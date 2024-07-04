@@ -42,6 +42,14 @@ class Deck:
             deck[suit] = temp
         return deck
     
+    def add_card(self, card:Card):
+        """
+        Adds a card back to the deck.
+        """
+        suit = card.get_suit()
+        self.deck[suit].append(card)
+        self.num_of_cards += 1
+
     def retrieve_card(self):
         """
         Retrieves a random card.
@@ -86,7 +94,7 @@ class Deck:
         """
         heading = """
 -----------------------------------------------------------------
-|   ♠️ Spades   |   ♥️ Hearts   |   ♣️ Clubs    |  ♦️ Diamonds  |
+|   ♠ Spades    |   ♥ Hearts    |    ♣ Clubs    |   ♦ Diamonds  |
 -----------------------------------------------------------------
 """
         number = f"Number of Cards in deck: {self.num_of_cards}"
@@ -102,8 +110,10 @@ class Deck:
             columns += "|\n"        
         return heading + columns + end
     
-# deck = Deck(6)
-# card = deck.retrieve_card()
-# print(deck)
-# print(card)
-    
+deck = Deck(6)
+card = deck.retrieve_card()
+print(deck)
+print(card)
+print("\nCHANGE\n")
+deck.add_card(card)
+print(deck)
