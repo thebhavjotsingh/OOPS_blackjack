@@ -42,6 +42,11 @@ class Card:
         self.suit = suit
         self.suit_sym = suit_sym
         self.rank = rank
+        if self.deck_id == 0:
+            suit_sym = '?'
+            self.suit = '?'
+            self.suit_sym = '?'
+            self.rank = '?'
 
     def get_suit(self):
         """
@@ -72,7 +77,7 @@ class Card:
         Returns the id of the card.
         """
         return self.deck_id
-
+    
     def __repr__(self) -> str:
         """
         Representation of the card in a box format
@@ -82,7 +87,6 @@ class Card:
 |   |
 |  {self.suit_sym}|
  ‾‾‾ '''
-        # return f"{self.suit_sym}{str(self.rank)}"
         return rep
     
     def __str__(self) -> str:

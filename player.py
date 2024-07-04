@@ -5,6 +5,8 @@
 from card import Card
 from deck import Deck
 import string
+from copy import deepcopy as dp
+
 ALPHA = string.ascii_uppercase
 
 class Player:
@@ -22,7 +24,7 @@ class Player:
             self.sub_player = False; self.split_done = False
             if str(id).isnumeric():
                 self.id = str(id)
-                self.name = name
+                self.name = name.title()
                 self.cards = []
                 self.card_points = []
                 self.points = 0
@@ -112,31 +114,42 @@ class Player:
                     self.change_bet("add", self.get_bet(), 0); self.change_bet("add", self.get_bet(), 1)
                     self.bet = 0
 
-    def change_bet(self, mode: str, amount:int = 0, hand:int = None):
+    def change_bet(self, mode: str, amount:int = None, hand:int = None):
         """
         
         """
-        if mode.lower() in ['add', 'dd'] and self.sub_player == False:
-            if mode.lower() == 'dd': amount = self.hands[hand].get_bet()
+        mode = mode.lower()
+
+        # AGRUMENT CHECKS START
+        if mode not in ['add', 'dd', 'give', 'clear']: raise ValueError(f"{mode} is not a valid option for change_bet method.")
+        if mode in ['add', 'give']:
+            if amount == None: raise ValueError(f"Please enter an amount you want to {mode} to player.")
+        if self.split_done == True and self.sub_player == False and hand == None:
+            raise ValueError(f"Please enter the hand id to which you want to perform {mode} action.")
+        # ARGUMENT CHECKS END
+
+        if mode in ['dd','add']:        
+            if mode == 'dd':
+                if self.sub_player == False and self.split_done == True:
+                    amount = self.hands[hand].get_bet()
+                elif self.sub_player == False and self.split_done == False:
+                    amount = self.bet
+
             if self.money >= amount:
                 self.money -= amount
             else:
-                raise ValueError(f"{self.name} doesn't have enough money.")
-
-        if self.split_done == True and self.sub_player == False:
-            if hand == None: self.money += amount; raise Exception("Please specify hand for modifying the bet.")
-            self.hands[hand].change_bet(mode, amount)
-
-        else:
-            if mode.lower() in ['add', 'dd'] and amount != None:
+                raise ValueError("You don't have enough money.")
+            
+            if self.sub_player == False and self.split_done == True:
+                self.hands[hand].change_bet('give', amount)
+            elif self.sub_player == False and self.split_done == False:
                 self.bet += amount
-                
-            elif mode.lower() == 'clear':
-                self.bet = 0
 
-            else:
-                self.money += amount
-                raise Exception(f"{mode} is not a valid option for changing bet.")
+        elif mode == 'give':
+            self.bet += amount
+
+        elif mode == 'clear':
+            self.bet = 0
 
     def reset_hand(self, deck: Deck):
         """
@@ -168,16 +181,64 @@ class Player:
         """
         return self.ini_money - self.money
 
+    def card_printer(self, cards) -> string:
+        printing_list = []
+        no_rows = round(len(cards)/4 + 0.4)
+        for row in range(no_rows):
+            row_cards = cards[0+row*4:4+row*4]
+            for line in range(5):
+                row_line = ''
+                red_count = 0
+                for i in range(len(row_cards)):
+                    if row_cards[i].get_suit() in ['hearts','diamonds']:                        
+                        row_line += f"\033[31m{repr(row_cards[i]).split('\n')[line]}\033[00m"
+                        red_count += 10 # each colored card needs ten more spaces for proper indentation
+                    elif row_cards[i].get_suit() == '?':                        
+                        row_line += f"\033[35m{repr(row_cards[i]).split('\n')[line]}\033[00m"
+                        red_count += 10 # each colored card needs ten more spaces for proper indentation
+                    else: 
+                        row_line += repr(row_cards[i]).split('\n')[line]
+                    if i != len(row_cards)-1:
+                        row_line += "  "
+                row_line = f"{row_line:^{130+red_count}}"
+                printing_list.append(row_line)
+        return "\n".join(printing_list)
+
     def __str__(self) -> str:
         """
         String representation of the players.
         """
-        if self.name == "Dealer" and self.turn == 0:
-            rep = f"{self.name}\n[🛑, {str(self.cards[1])}]\nPoints: {self.points - self.cards[0].get_value()}"
+        rep=''
+        if self.name == "Dealer" and len(self.cards) == 1:
+            rep = f"{'\033[31;1;4mDEALER\033[00m':^144}\n{'Balance: \033[34m∞\033[0m':^139}\n{'Hand: \033[35m??\033[0m':^139}\n"
+            cards = dp(self.cards)
+            cards.append(Card('hearts',2,0))
+            rep += self.card_printer(cards)
+        elif self.name == "Dealer":
+            rep = f"{'\033[31;1;4mDEALER\033[00m':^144}\n{'Balance: \033[34m∞\033[0m':^139}\n{f'Hand: \033[34m{self.points}\033[0m':^139}\n"
+            cards = dp(self.cards)
+            rep += self.card_printer(cards)
         else:
-            rep = f"{self.name}\n["
-            for card in self.cards:
-                rep += f"{str(card)}, "
-            rep += f"]\nPoints: {self.points}"    
+            rep = f"{f'\033[32;1;4m{self.name.upper()}\033[00m':^144}\n"
+            if self.split_done == False and self.sub_player == False:
+                if self.money <= 20:
+                    rep += f"{f'Balance: \033[31m{self.money}\033[00m   ':>75}"+f"{f'   Stake: \033[34m{self.bet}\033[00m':<75}\n"
+                else:
+                    rep += f"{f'Balance: \033[34m{self.money}\033[00m   ':>75}"+f"{f'   Stake: \033[34m{self.bet}\033[00m':<75}\n"
+                rep += f"{f'Hand: \033[34m{self.points}\033[00m':^140}\n"
+                cards = dp(self.cards)
+                rep += self.card_printer(cards)  
         
         return rep
+
+# d = Player(0, 'Dealer')
+# d.add_card(Card('spades', 'A', 1))
+# # d.add_card(Card('hearts', 'Q', 1))
+# d.add_card(Card('spades', 'K', 1))
+
+# p = Player(1, 'Sharry',300)
+# p.add_card(Card('diamonds', 10, 1))
+# p.add_card(Card('clubs', 'A', 1))
+# p.add_card(Card('spades', 7, 1))
+# print(d)
+# print(p)
