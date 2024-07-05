@@ -85,6 +85,14 @@ class Player:
         """
         return self.bet
 
+    def get_points(self, hand:int = None):
+        """
+        
+        """
+        if hand != None: 
+            return self.hands[hand].get_points()
+        return self.points
+
     def player_split(self):
         """
         
@@ -121,24 +129,27 @@ class Player:
         mode = mode.lower()
 
         # AGRUMENT CHECKS START
-        if mode not in ['add', 'dd', 'give', 'clear']: raise ValueError(f"{mode} is not a valid option for change_bet method.")
+        if mode not in ['add', 'dd', 'give', 'clear', 'win', 'winb']: raise ValueError(f"{mode} is not a valid option for change_bet method.")
         if mode in ['add', 'give']:
             if amount == None: raise ValueError(f"Please enter an amount you want to {mode} to player.")
         if self.split_done == True and self.sub_player == False and hand == None:
             raise ValueError(f"Please enter the hand id to which you want to perform {mode} action.")
         # ARGUMENT CHECKS END
 
-        if mode in ['dd','add']:        
-            if mode == 'dd':
+        if mode in ['win','winb','dd','add']:        
+            if mode in ['dd','win','winb']:
                 if self.sub_player == False and self.split_done == True:
                     amount = self.hands[hand].get_bet()
                 elif self.sub_player == False and self.split_done == False:
                     amount = self.bet
+                if mode == 'winb':
+                    amount *= 1.5
 
-            if self.money >= amount:
-                self.money -= amount
-            else:
-                raise ValueError("You don't have enough money.")
+            if mode in ['dd','add']:
+                if self.money >= amount:
+                    self.money -= amount
+                else:
+                    raise ValueError("You don't have enough money.")
             
             if self.sub_player == False and self.split_done == True:
                 self.hands[hand].change_bet('give', amount)
@@ -232,14 +243,14 @@ class Player:
         
         return rep
 
-# d = Player(0, 'Dealer')
-# d.add_card(Card('spades', 'A', 1))
-# # d.add_card(Card('hearts', 'Q', 1))
+d = Player(0, 'Dealer')
+d.add_card(Card('spades', 'A', 1))
+# d.add_card(Card('hearts', 'Q', 1))
 # d.add_card(Card('spades', 'K', 1))
 
-# p = Player(1, 'Sharry',300)
-# p.add_card(Card('diamonds', 10, 1))
-# p.add_card(Card('clubs', 'A', 1))
-# p.add_card(Card('spades', 7, 1))
-# print(d)
-# print(p)
+p = Player(1, 'Sharry',300)
+p.add_card(Card('diamonds', 10, 1))
+p.add_card(Card('clubs', 'A', 1))
+p.add_card(Card('spades', 7, 1))
+print(d)
+print(p)
