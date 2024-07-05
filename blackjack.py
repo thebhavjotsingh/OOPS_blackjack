@@ -27,14 +27,14 @@ def player_creation(number_of_players:int, list_of_players:list):
             pl = Player(i,name,amount)
             list_of_players.append(pl)
 
-def set_bet(players:list):
-      for i in range(len(players) + 1, number_of_players + 1):
-            bet_amount = int(input(f"ENTER THE STARTING BET AMOUNT FOR {name}: "))
-            if bet_amount < 20:
-                  print("BET AMOUNT CANNOT BE LESS THAN 20.")
-                  name = name.upper()
-                  bet_amount = int(input(f"ENTER THE STARTING BET AMOUNT FOR {name}: "))
-                  players[i-1].change_bet("add", bet_amount)
+def set_bet(players: list):
+    for i in range(len(players)):
+        bet_amount = int(input(f"ENTER THE BET AMOUNT FOR {players[i].name}: "))
+        while bet_amount < 20:
+            print("BET AMOUNT CANNOT BE LESS THAN 20.")
+            bet_amount = int(input(f"ENTER THE BET AMOUNT FOR {players[i].name}: "))
+        players[i].change_bet("add", bet_amount)
+
 
 def card_distribute(players:list):   
       for i in range (len(players)):
@@ -46,23 +46,29 @@ def card_snatch(players:list, dealer):
       for i in range (len(players)):
             players[i].reset_hand(DECK)
 
-      # dealer.reset_hand(DECK)
+      dealer.reset_hand(DECK)
 
 def round_winner(players:list, dealer):
-      card = DECK.retrieve_card()
-      dealer.add_card(card)
-      print(dealer)
+      print("DEALER HITS UNTILL REACHES HIS POINTS REACH 17.")
+      while dealer.points < 17:
+            card = DECK.retrieve_card()
+            dealer.add_card(card)
+            print(dealer)
       for player in players:
             if player.points > 21:
                   print(f"{player.name} LOST. POINTS REACHED 21")
+                  player.change_bet("clear")
             elif dealer.points > 21:
                   print(f"DEALER LOST")
+                  player.change_bet("give")
             elif player.points > dealer.points:
                   print(f"{player.name} WINS")
+                  player.change_bet("give")
             elif player.points == dealer.points:
                   print("ROUND WAS A TIE.")
             else:
                   print("DEALER WINS")
+                  player.change_bet("clear")
 
 def round_end_menu(players:list, dealer):
       count_ = 0

@@ -243,6 +243,7 @@ class Player:
         
         return rep
 
+<<<<<<< HEAD
 d = Player(0, 'Dealer')
 d.add_card(Card('spades', 'A', 1))
 # d.add_card(Card('hearts', 'Q', 1))
@@ -254,3 +255,16 @@ p.add_card(Card('clubs', 'A', 1))
 p.add_card(Card('spades', 7, 1))
 print(d)
 print(p)
+=======
+#d = Player(0, 'Dealer')
+#d.add_card(Card('spades', 'A', 1))
+# d.add_card(Card('hearts', 'Q', 1))
+#d.add_card(Card('spades', 'K', 1))
+
+#p = Player(1, 'Sharry',300)
+#p.add_card(Card('diamonds', 10, 1))
+#p.add_card(Card('clubs', 'A', 1))
+#p.add_card(Card('spades', 7, 1))
+#print(d)
+#print(p)
+>>>>>>> c8a2a51 (updated)
