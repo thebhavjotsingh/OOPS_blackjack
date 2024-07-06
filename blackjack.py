@@ -60,10 +60,10 @@ def round_winner(players:list, dealer):
                   player.change_bet("clear")
             elif dealer.points > 21:
                   print(f"DEALER LOST")
-                  player.change_bet("give")
+                  player.change_bet("win")
             elif player.points > dealer.points:
                   print(f"{player.name} WINS")
-                  player.change_bet("give")
+                  player.change_bet("win")
             elif player.points == dealer.points:
                   print("ROUND WAS A TIE.")
             else:
@@ -71,6 +71,7 @@ def round_winner(players:list, dealer):
                   player.change_bet("clear")
 
 def round_end_menu(players:list, dealer):
+      global number_of_players
       count_ = 0
       decision_2 = input("CHOOSE FROM THE FOLLOWING OPTIONS:\n 1. CONTINUE TO NEXT ROUND\n 2. LEAVE GAME\n 3. ENTER NEW PEOPLE\n ")
       if decision_2 == "1":
@@ -79,16 +80,21 @@ def round_end_menu(players:list, dealer):
       elif decision_2 == "2":
             d = input("ENTER THE ID OF PLAYERS LEAVING THE GAME SEPARATED BY COMMAS: ")
             list_d = d.split(",")
-            for i in range (len(list_d)):
-                  players.pop(list_d[i])
-                  count_ += 1
+            for player_id in list_d:
+                  player_id = int(player_id.strip())
+                  if 0 <= player_id < len(players):
+                        players.pop(player_id)
+                        count_ += 1
             number_of_players -= count_
-            return players
+            card_snatch(players, dealer)
+            game_loop(players)
       elif decision_2 == "3":
             d = input("ENTER THE NUMBER OF PLAYERS WANTING TO JOIN: ")
-            number_of_players += d
+            new_players = int(d.strip())  # Convert to integer
+            number_of_players += new_players
             player_creation(number_of_players, players)
-            return players
+            card_snatch(players, dealer)
+            game_loop(players)
 
 def game_loop(players:list):
       global count 
