@@ -79,6 +79,17 @@ class Player:
             else:
                 return add
 
+    def check_blackjack(self):
+        """
+        
+        """
+        if len(self.cards) == 2:
+            card_ranks = [self.cards[0].get_rank(), self.cards[1].get_rank()]
+            if 'A' in card_ranks:
+                if ('K' in card_ranks) or ('Q' in card_ranks) or ('J' in card_ranks):
+                    return True
+        return False
+
     def get_bet(self):
         """
         Retrieve bet amount for the hand.
