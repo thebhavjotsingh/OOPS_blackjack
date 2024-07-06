@@ -116,7 +116,7 @@ class Player:
                     new_hand2_card = self.remove_card()
                     new_hand1_card = self.remove_card()
                     id1 = f"{self.id}A"; id2 = f"{self.id}B"; 
-                    new_hand1 = Player(id, self.name, 0, True); new_hand2 = Player(id, self.name, 0, True)
+                    new_hand1 = Player(id1, self.name, 0, True); new_hand2 = Player(id2, self.name, 0, True)
                     self.hands.append(new_hand1); self.hands.append(new_hand2)
                     self.add_card(new_hand1_card, 0); self.add_card(new_hand2_card, 1)
                     self.change_bet("add", self.get_bet(), 0); self.change_bet("add", self.get_bet(), 1)
@@ -243,28 +243,14 @@ class Player:
         
         return rep
 
-<<<<<<< HEAD
-d = Player(0, 'Dealer')
-d.add_card(Card('spades', 'A', 1))
+# d = Player(0, 'Dealer')
+# d.add_card(Card('spades', 'A', 1))
 # d.add_card(Card('hearts', 'Q', 1))
 # d.add_card(Card('spades', 'K', 1))
 
-p = Player(1, 'Sharry',300)
-p.add_card(Card('diamonds', 10, 1))
-p.add_card(Card('clubs', 'A', 1))
-p.add_card(Card('spades', 7, 1))
-print(d)
-print(p)
-=======
-#d = Player(0, 'Dealer')
-#d.add_card(Card('spades', 'A', 1))
-# d.add_card(Card('hearts', 'Q', 1))
-#d.add_card(Card('spades', 'K', 1))
-
-#p = Player(1, 'Sharry',300)
-#p.add_card(Card('diamonds', 10, 1))
-#p.add_card(Card('clubs', 'A', 1))
-#p.add_card(Card('spades', 7, 1))
-#print(d)
-#print(p)
->>>>>>> c8a2a51 (updated)
+# p = Player(1, 'Sharry',300)
+# p.add_card(Card('diamonds', 10, 1))
+# p.add_card(Card('clubs', 'A', 1))
+# p.add_card(Card('spades', 7, 1))
+# print(d)
+# print(p)
