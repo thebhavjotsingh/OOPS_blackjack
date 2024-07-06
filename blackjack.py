@@ -54,8 +54,16 @@ def round_winner(players:list, dealer):
             card = DECK.retrieve_card()
             dealer.add_card(card)
             print(dealer)
+
+      if dealer.check_blackjack()  == True:
+            print("DEALER WINS. IT'S A BLACKJACK.")
+            player.change_bet("clear")
+
       for player in players:
-            if player.points > 21:
+            if player.check_blackjack() == True:
+                  print(f"{player.name} WINS. IT'S A BLACKJACK.")
+                  player.change_bet("winb")
+            elif player.points > 21:
                   print(f"{player.name} LOST. POINTS REACHED 21")
                   player.change_bet("clear")
             elif dealer.points > 21:
