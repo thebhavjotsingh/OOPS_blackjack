@@ -203,13 +203,13 @@ class Player:
                 red_count = 0
                 for i in range(len(row_cards)):
                     if row_cards[i].get_suit() in ['hearts','diamonds']:                        
-                        row_line += f"\033[31m{repr(row_cards[i]).split('\n')[line]}\033[00m"
+                        row_line += f"\033[31m{str(row_cards[i]).split('\n')[line]}\033[00m"
                         red_count += 10 # each colored card needs ten more spaces for proper indentation
                     elif row_cards[i].get_suit() == '?':                        
-                        row_line += f"\033[35m{repr(row_cards[i]).split('\n')[line]}\033[00m"
+                        row_line += f"\033[35m{str(row_cards[i]).split('\n')[line]}\033[00m"
                         red_count += 10 # each colored card needs ten more spaces for proper indentation
                     else: 
-                        row_line += repr(row_cards[i]).split('\n')[line]
+                        row_line += str(row_cards[i]).split('\n')[line]
                     if i != len(row_cards)-1:
                         row_line += "  "
                 row_line = f"{row_line:^{130+red_count}}"

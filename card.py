@@ -78,7 +78,7 @@ class Card:
         """
         return self.deck_id
     
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         """
         Representation of the card in a box format
         """
@@ -89,7 +89,7 @@ class Card:
  ‾‾‾ '''
         return rep
     
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         """
         
         """
