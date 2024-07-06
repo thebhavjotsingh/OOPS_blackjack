@@ -90,6 +90,7 @@ def round_end_menu(players:list, dealer):
             list_d = d.split(",")
             for player_id in list_d:
                   player_id = int(player_id.strip())
+                  player_id -= 1
                   if 0 <= player_id < len(players):
                         players.pop(player_id)
                         count_ += 1
@@ -121,6 +122,9 @@ def game_loop(players:list):
                         if players[i-1].points > 21:
                               print(players[i-1])
                               print("BUSTED. YOU EXCEEDED 21. YOU LOSE.")
+                              break
+                        if players[i-1].check_blackjack() == True:
+                              print(f"{players[i-1].name} HAS A BLACKJACK. CONTINUING TO NEXT PLAYER.")
                               break
                         print(f"PLAYER {i} PLAYING")
                         print(players[i-1])
