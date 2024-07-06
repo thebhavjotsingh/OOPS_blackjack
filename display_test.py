@@ -19,14 +19,14 @@ for row in range(no_rows):
         for i in range(len(row_cards)):
             if row_cards[i].get_suit() in ['hearts','diamonds']:
                 
-                row_line += f"\033[31m{repr(row_cards[i]).split('\n')[line]}\033[00m"
+                row_line += f"\033[31m{str(row_cards[i]).split('\n')[line]}\033[00m"
                 red_count += 10 # each colored card needs ten more spaces for proper indentation
             else: 
-                row_line += repr(row_cards[i]).split('\n')[line]
+                row_line += str(row_cards[i]).split('\n')[line]
             if i != 3:
                 row_line += "  "
         row_line = f"{row_line:^{78+red_count}}"
-        #print(row_line)
+        print(row_line)
 
 #Dealer
 Dealer_cards=[]
@@ -44,10 +44,10 @@ for line_2 in range(5):
         
         if Dealer_cards[k].get_suit() in ['hearts','diamonds']:
                 
-                Dealer_rep += f"\033[31m{repr(Dealer_cards[k]).split('\n')[line_2]}\033[00m"
+                Dealer_rep += f"\033[31m{str(Dealer_cards[k]).split('\n')[line_2]}\033[00m"
                 red_count += 10 # each colored card needs ten more spaces for proper indentation
         else: 
-                Dealer_rep += repr(Dealer_cards[k]).split('\n')[line_2]
+                Dealer_rep += str(Dealer_cards[k]).split('\n')[line_2]
         if k != 3:
             Dealer_rep += "  "
     Dealer_rep = f"{Dealer_rep:^{78+red_count}}"
@@ -79,10 +79,10 @@ for line_3 in range(5):
     for m in range(len(Player1_cards)):
         if Player1_cards[m].get_suit() in ['hearts','diamonds']:
                 
-                Player_rep += f"\033[31m{repr(Player1_cards[m]).split('\n')[line_3]}\033[00m"
+                Player_rep += f"\033[31m{str(Player1_cards[m]).split('\n')[line_3]}\033[00m"
                 red_count += 10 # each colored card needs ten more spaces for proper indentation
         else: 
-                Player_rep += repr(Player1_cards[m]).split('\n')[line_3]
+                Player_rep += str(Player1_cards[m]).split('\n')[line_3]
         
         if m != 3:
             Player_rep += "  "
