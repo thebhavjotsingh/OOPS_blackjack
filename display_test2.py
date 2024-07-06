@@ -11,4 +11,5 @@ for i in range(4):
         hand.append(deck.retrieve_card())
     hands.append(hand)
 
+hands[1].append(deck.retrieve_card())
 print(hands)
