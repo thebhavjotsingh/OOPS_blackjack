@@ -7,7 +7,7 @@ hands = []
 
 for i in range(2):
     hand = []
-    for j in range(8):
+    for j in range(4):
         hand.append(deck.retrieve_card())
     hands.append(hand)
 
@@ -29,7 +29,10 @@ for i in range(no_rows1):
         for hand in hands:
             for card_index in range(i*4, (i+1)*4):
                 try:
-                    row_line += str(hand[card_index]).split('\n')[line] + " "
+                    if hand[card_index].get_suit() in ['hearts','diamonds']:
+                        row_line += f"\033[31m{str(hand[card_index]).split('\n')[line]}\033[00m" + " "
+                    else: 
+                        row_line += str(hand[card_index]).split('\n')[line] + " "
                 except:
                     row_line += 6*" "
             row_line += 4*" "

@@ -92,12 +92,3 @@ for line_3 in range(5):
 print(f"{'POINTS:':^{78}}")
 print('\n')
 print("\033[31;1;4mHello\033[0m")
-
-
-
-
-
-
-
-
-
