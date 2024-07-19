@@ -46,7 +46,7 @@ class Player:
             else:
                 raise KeyError("ID should be an Alphanumeric string in the form of '[player_id(int)][subhand char(alpha)]'")
 
-    def add_card(self, card:Card, hand:int=None):
+    def add_card(self, card:Card, hand=None):
         """
         Adds a card to the hand of player.
         """
@@ -57,7 +57,7 @@ class Player:
             self.card_points.append(card.get_value())
             self.points = self.point_calc()
 
-    def remove_card(self, hand:int=None):
+    def remove_card(self, hand=None):
         """
         Remove a card from a hand of player and returns that card.
         """
@@ -77,10 +77,11 @@ class Player:
             return sum(self.card_points)
         else:
             add = sum(self.card_points)
-            if add > 21:
-                return add-10
-            else:
-                return add
+            As = self.card_points.count(11)
+            while add > 21 and As > 0:
+                add -= 10
+                As -= 1
+            return add
 
     def check_blackjack(self):
         """
@@ -89,29 +90,76 @@ class Player:
         if len(self.cards) == 2:
             card_ranks = [self.cards[0].get_rank(), self.cards[1].get_rank()]
             if 'A' in card_ranks:
-                if ('K' in card_ranks) or ('Q' in card_ranks) or ('J' in card_ranks):
+                if ('K' in card_ranks) or ('Q' in card_ranks) or ('J' in card_ranks) or (10 in card_ranks):
                     return True
         return False
 
-    def get_bet(self):
+    def get_bet(self, hand=None):
         """
         Retrieve bet amount for the hand.
         """
+        if hand != None and hand in range(len(self.hands)): 
+            return self.hands[hand].get_bet()
         return self.bet
 
-    def get_points(self, hand:int = None):
+    def get_name(self):
+        """
+        Returns the name of the player.
+        """
+        return self.name
+
+    def get_id(self):
         """
         
         """
-        if hand != None: 
+        return self.id
+
+    def get_sub_hands(self):
+        """
+        returns the number of subhands a player has.
+        """
+        return len(self.hands)
+
+    def get_balance(self):
+        """
+        Returns the available balance for the player
+        """
+        if self.sub_player == False:
+            return self.money
+
+    def get_points(self, hand = None):
+        """
+        
+        """
+        if hand != None and hand in range(len(self.hands)): 
             return self.hands[hand].get_points()
         return self.points
+
+    def get_profit(self):
+        """
+        Returns the value of profit/loss made throughout the playthrough.
+        """
+        return self.money - self.ini_money
 
     def status_split(self):
         return self.split_done
     
     def sub_exist(self):
         return self.sub_player
+
+    def split_possible(self, hand=None):
+        """
+        Returns a boolean value indicating if a split is possible for the player.
+        """
+        if hand != None and hand < len(self.hands):
+            if len(self.hands[hand].cards) == 2:
+                if self.hands[hand].cards[0].get_rank() == self.hands[hand].cards[1].get_rank():
+                    return True
+        else:
+            if len(self.cards) == 2:
+                if self.cards[0].get_rank() == self.cards[1].get_rank():
+                    return True
+        return False
 
     def player_split(self):
         """
@@ -120,16 +168,19 @@ class Player:
         if self.sub_player == True: raise Exception("Please perform a split action on player instead of sub-hand.")
         if self.split_done == True:
             no_hands = len(self.hands)
-            for hi in no_hands: #Hand index
-                hand_cards = self.hands[hi].cards()
-                if len(hand_cards) == 2:
-                    if hand_cards[0].get_rank() == hand_cards[1].get_rank():
-                        new_hand_card = self.remove_card(hi)
-                        id = f"{self.id}{ALPHA[no_hands]}"
-                        new_hand = Player(id, self.name, 0, True)
-                        self.hands.append(new_hand)
-                        self.add_card(new_hand_card, no_hands)
-                        self.change_bet("add", self.hands[hi].get_bet(), no_hands)
+            if no_hands < 4:
+                for hi in no_hands: #Hand index
+                    hand_cards = self.hands[hi].cards()
+                    if len(hand_cards) == 2:
+                        if hand_cards[0].get_rank() == hand_cards[1].get_rank():
+                            new_hand_card = self.remove_card(hi)
+                            id = f"{self.id}{ALPHA[no_hands]}"
+                            new_hand = Player(id, self.name, 0, True)
+                            self.hands.append(new_hand)
+                            self.add_card(new_hand_card, no_hands)
+                            self.change_bet("add", self.hands[hi].get_bet(), no_hands)
+            else:
+                raise Exception("No more splits are possible.")
         else:
             self.split_done = True
             if len(self.cards) == 2:
@@ -144,7 +195,7 @@ class Player:
                     self.change_bet("add", self.bet, 0); self.change_bet("add", self.bet, 1)
                     self.bet = 0 
 
-    def change_bet(self, mode: str, amount:int = None, hand:int = None):
+    def change_bet(self, mode: str, amount:int = None, hand = None):
         """
         
         """
@@ -190,7 +241,7 @@ class Player:
         and then resets the player parameters for the next round.
         """    
         if self.sub_player == True: raise Exception("Resetting split hands is not allowed.")
-        if self.name != 'Dealer':
+        if self.name.upper() != 'DEALER':
             end_money = 0
             if self.split_done == True:
                 for hi in range(len(self.hands)): #Hand index
@@ -206,8 +257,8 @@ class Player:
         
         while len(self.cards) != 0:
             deck.add_card(self.remove_card())
-            self.points = 0
-            self.card_points = []
+        self.points = 0
+        self.card_points = []
 
     def quit_money(self):
         """
@@ -277,12 +328,12 @@ class Player:
             rep = f"{'\033[31;1;4mDEALER\033[00m'}\n{'Balance: \033[34m∞\033[0m'}\n{'Hand: \033[35m??\033[0m'}\n"
             cards = dp(self.cards)
             cards.append(Card('hearts',2,0))
-            rep += self.card_printer(cards)
+            rep += self.card_printer()
         elif self.name == "Dealer":
             rep = f"{'\033[31;1;4mDEALER\033[00m'}\n{'Balance: \033[34m∞\033[0m'}\n{f'Hand: \033[34m{self.points}\033[0m'}\n"
             rep += self.card_printer()
         else:
-            rep = f"{f'\033[32;1;4m{self.name.upper()}\033[00m'}\n"
+            rep = f"{f'\033[32;1;4m{self.name.upper()} ID:{self.id}\033[00m'}\n"
             if self.split_done == False and self.sub_player == False:
                 if self.money <= 20:
                     rep += f"{f'Balance: \033[31m{self.money}\033[00m   '}"+f"{f'   Stake: \033[34m{self.bet}\033[00m'}\n"
@@ -300,22 +351,22 @@ class Player:
                 point_line = ''
                 for i in range(len(self.hands)):
                     rep += f"{f'Stake: \033[34m{self.hands[i].bet}\033[00m':38}"
-                    point_line += f"{f'Hand {i+1}: \033[34m{self.hands[i].points}\033[00m':38}"
+                    point_line += f"{f'Hand {self.hands[i].get_id()}: \033[34m{self.hands[i].points}\033[00m':38}"
                 rep += f'\n{point_line}\n'
                 rep += self.card_printer()
                     
         return rep
 
-d = Player(0, 'Dealer')
-d.add_card(Card('spades', 'A', 1))
-d.add_card(Card('hearts', 'Q', 1))
-d.add_card(Card('spades', 'K', 1))
+# d = Player(0, 'Dealer')
+# d.add_card(Card('spades', 'A', 1))
+# d.add_card(Card('hearts', 'Q', 1))
+# d.add_card(Card('spades', 'K', 1))
 
-p = Player(1, 'Sharry',300)
-p.add_card(Card('diamonds', 10, 1))
-p.add_card(Card('clubs', 10, 1))
-p.change_bet('add', 21)
-p.player_split()
+# p = Player(1, 'Sharry',300)
+# p.add_card(Card('diamonds', 10, 1))
+# p.add_card(Card('clubs', 10, 1))
+# p.change_bet('add', 21)
+# p.player_split()
 # p.add_card(Card('spades', 7, 1))
-print(d)
-print(p)
+# print(d)
+# print(p)
