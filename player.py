@@ -323,12 +323,13 @@ class Player:
         """
         String representation of the players that includes there name, balance and stakes.
         """
-        rep=''
+        rep = ''
         if self.name == "Dealer" and len(self.cards) == 1:
             rep = f"{'\033[31;1;4mDEALER\033[00m'}\n{'Balance: \033[34m∞\033[0m'}\n{'Hand: \033[35m??\033[0m'}\n"
-            cards = dp(self.cards)
-            cards.append(Card('hearts',2,0))
+            backup_cards = dp(self.cards)
+            self.add_card(Card('hearts',2,0))
             rep += self.card_printer()
+            self.cards = backup_cards
         elif self.name == "Dealer":
             rep = f"{'\033[31;1;4mDEALER\033[00m'}\n{'Balance: \033[34m∞\033[0m'}\n{f'Hand: \033[34m{self.points}\033[0m'}\n"
             rep += self.card_printer()
@@ -357,16 +358,16 @@ class Player:
                     
         return rep
 
-# d = Player(0, 'Dealer')
-# d.add_card(Card('spades', 'A', 1))
+d = Player(0, 'Dealer')
+d.add_card(Card('spades', 'A', 1))
 # d.add_card(Card('hearts', 'Q', 1))
 # d.add_card(Card('spades', 'K', 1))
 
-# p = Player(1, 'Sharry',300)
-# p.add_card(Card('diamonds', 10, 1))
-# p.add_card(Card('clubs', 10, 1))
-# p.change_bet('add', 21)
-# p.player_split()
-# p.add_card(Card('spades', 7, 1))
-# print(d)
-# print(p)
+p = Player(1, 'Sharry',300)
+p.add_card(Card('diamonds', 10, 1))
+p.add_card(Card('clubs', 10, 1))
+p.change_bet('add', 21)
+p.player_split()
+p.add_card(Card('spades', 7, 1))
+print(d)
+print(p)
